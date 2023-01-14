@@ -1,0 +1,5 @@
+/build-afl
+/build-cov
+/in
+/out
+/sqlsmith-1.4/build
