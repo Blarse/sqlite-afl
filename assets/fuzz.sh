@@ -5,5 +5,5 @@ export AFL_AUTORESUME=1
 
 mkdir -pv ./out
 afl-fuzz -i ./in -o ./out -x ./sql.dict \
-	 ${ROLE:--M} ${INSTANCE:-master} ${AFL_CORE:+-b $AFL_CORE} \
-	 -- ../build-afl/sqlite3 --safe
+	 ${ROLE:--M} ${INSTANCE:-master} ${BIND_CORE:+-b $BIND_CORE} \
+	 -- build-afl/sqlite3 --safe
