@@ -9,7 +9,6 @@ pushd build-afl
 ../sqlite-version-3.40.1/configure \
 	CC=afl-clang-lto \
 	LD=afl-ld-lto \
-	LDFLAGS=-static \
 	CPPFLAGS="-DSQLITE_OMIT_TRACE=1" \
 	--enable-shared=no \
 	--disable-amalgamation \
@@ -21,14 +20,14 @@ popd
 mkdir -pv build-cov
 pushd build-cov
 ../sqlite-version-3.40.1/configure \
-        CC=clang \
-        LD=ld.lld \
-        LDFLAGS="-static --coverage" \
-	CFLAGS="--coverage" \
+	CC=clang \
+	LD=ld.lld \
+	LDFLAGS="--coverage" \
+	CFLAGS="-fprofile-arcs -ftest-coverage" \
 	CPPFLAGS="-DSQLITE_OMIT_TRACE=1" \
-        --enable-shared=no \
-        --disable-amalgamation \
-        --disable-load-extension
+	--enable-shared=no \
+	--disable-amalgamation \
+	--disable-load-extension
 
 make -j $(nproc) sqlite3
 popd
@@ -45,6 +44,7 @@ popd
 
 mkdir -pv in
 pushd in
-../sqlsmith-1.4/build/sqlsmith --max-queries=100 --seed=47 --dry-run --sqlite 2>/dev/null \
-	| csplit - "/;/+1" "{*}"
+../sqlsmith-1.4/build/sqlsmith \
+	--max-queries=100 \--seed=47 --dry-run --sqlite 2>/dev/null | \
+	csplit - "/;/+1" "{*}"
 popd
