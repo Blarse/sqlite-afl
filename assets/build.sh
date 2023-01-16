@@ -4,6 +4,8 @@
 
 mkdir -pv build-afl
 pushd build-afl
+# NOTE(egori): Trace is disabled because afl quickly discovers
+# .trace command which pollutes host system.
 ../sqlite-version-3.40.1/configure \
 	CC=afl-clang-lto \
 	LD=afl-ld-lto \
@@ -22,7 +24,7 @@ pushd build-cov
         CC=clang \
         LD=ld.lld \
         LDFLAGS="-static --coverage" \
-	CFLAGS="-fprofile-arcs -ftest-coverage" \
+	CFLAGS="--coverage" \
 	CPPFLAGS="-DSQLITE_OMIT_TRACE=1" \
         --enable-shared=no \
         --disable-amalgamation \
