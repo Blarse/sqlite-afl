@@ -45,6 +45,6 @@ popd
 mkdir -pv in
 pushd in
 ../sqlsmith-1.4/build/sqlsmith \
-	--max-queries=100 \--seed=47 --dry-run --sqlite 2>/dev/null | \
+	--max-queries=100 --seed=47 --dry-run --sqlite 2>/dev/null | \
 	csplit - "/;/+1" "{*}"
 popd
